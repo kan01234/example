@@ -18,6 +18,10 @@ public class IteratorationSteamBenchmark {
             numsArrayList.add(i);
         }
     }
+  
+    public static void main(String[] args) throws Exception {
+        org.openjdk.jmh.Main.main(args);
+    }
 
     @Benchmark
     public List<Double> for1() {

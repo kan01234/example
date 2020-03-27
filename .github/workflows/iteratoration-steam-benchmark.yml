@@ -36,6 +36,7 @@ jobs:
     - name: maven build
       run: |
         mvn clean install --file java/iteratoration-steam-benchmark/pom.xml
+        find .
     # upload jar
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0

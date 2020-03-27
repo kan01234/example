@@ -14,7 +14,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 10000;
+  public static final int N = 5000;
 
     static List<Integer> numsArrayList = new ArrayList<>();
     static {
@@ -27,8 +27,8 @@ public class IteratorationSteamBenchmark {
       Options opt = new OptionsBuilder()
         .include(IteratorationSteamBenchmark.class.getSimpleName())
         .forks(1)
-        .warmupIterations(5)
-        .measurementIterations(5)
+        .warmupIterations(2)
+        .measurementIterations(2)
         .build();
         new Runner(opt).run();
     }
@@ -63,4 +63,10 @@ public class IteratorationSteamBenchmark {
       return results;
     }
 
+    @Benchmark
+    public List<Double> steam1() {
+      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      // TODO
+      return results;
+    }
 }

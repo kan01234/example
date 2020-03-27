@@ -30,7 +30,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('iteratoration-steam-benchmark/pom.xml') }}
+        key: ${{ runner.os }}-m2-${{ hashFiles('**iteratoration-steam-benchmark/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     # maven package
     - name: maven build

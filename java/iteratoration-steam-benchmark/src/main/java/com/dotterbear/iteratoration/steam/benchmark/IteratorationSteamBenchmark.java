@@ -21,7 +21,7 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> for1() {
-      List<Integer> results = new ArrayList<>(N / 2 + 1);
+      List<Double> results = new ArrayList<>(N / 2 + 1);
       for (int i = 0; i < N; i++) {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
@@ -31,7 +31,7 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> for2() {
-      List<Integer> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
       for (int i = 0; i < numsArrayList.size(); i++) {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
@@ -41,7 +41,7 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> for3() {
-      List<Integer> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
       for (int i : numsArrayList.size()) {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));

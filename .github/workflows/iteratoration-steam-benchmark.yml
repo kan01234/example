@@ -36,7 +36,15 @@ jobs:
     - name: maven build
       run: |
         mvn clean install --file java/iteratoration-steam-benchmark/pom.xml
-    # execute jar
-    - name: execute jar
-      run: |
-        java jar java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar
+    # upload jar
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: build.jar
+        # Directory containing files to upload
+        path: java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar
+#     # execute jar
+#     - name: execute jar
+#       run: |
+#         java jar java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar

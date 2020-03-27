@@ -30,7 +30,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/iteratoration-steam-benchmark/pom.xml') }}
+        key: ${{ runner.os }}-m2-${{ hashFiles('**pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     # maven package
     - name: maven build
@@ -39,5 +39,4 @@ jobs:
     # execute jar
     - name: execute jar
       run: |
-        find .
-        java jar java/iteratoration-steam-benchmark/target/benchmark.jar App
+        java jar java/iteratoration-steam-benchmark/target/benchmark.jar IteratorationSteamBenchmark

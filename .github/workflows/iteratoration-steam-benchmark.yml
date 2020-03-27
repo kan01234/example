@@ -44,8 +44,8 @@ jobs:
         # Artifact name
         name: build.jar
         # Directory containing files to upload
-        path: java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar
-#     # execute jar
-#     - name: execute jar
-#       run: |
-#         java jar java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar
+        path: java/iteratoration-steam-benchmark/target/test-java-maven-0.0.1-SNAPSHOT.jar
+    # execute jar
+    - name: execute jar
+      run: |
+        java jar java/iteratoration-steam-benchmark/target/test-java-maven 0.0.1-SNAPSHOT.jar

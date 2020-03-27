@@ -42,7 +42,7 @@ public class IteratorationSteamBenchmark {
     @Benchmark
     public List<Double> for3() {
       List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      for (int i : numsArrayList.size()) {
+      for (int i : numsArrayList) {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
       }

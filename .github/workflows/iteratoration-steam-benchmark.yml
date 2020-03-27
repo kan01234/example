@@ -35,8 +35,8 @@ jobs:
     # maven package
     - name: maven build
       run: |
-        mvn clean package --file ./iteratoration-steam-benchmark/pom.xml
+        mvn clean package --file iteratoration-steam-benchmark/pom.xml
     # execute jar
     - name: execute jar
       run: |
-        java jar ./iteratoration-steam-benchmark/target/benchmark.jar
+        java jar iteratoration-steam-benchmark/target/benchmark.jar

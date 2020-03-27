@@ -39,4 +39,4 @@ jobs:
     # execute jar
     - name: execute jar
       run: |
-        java jar java/iteratoration-steam-benchmark/target/benchmark.jar IteratorationSteamBenchmark
+        java jar java/iteratoration-steam-benchmark/target/benchmark.jar

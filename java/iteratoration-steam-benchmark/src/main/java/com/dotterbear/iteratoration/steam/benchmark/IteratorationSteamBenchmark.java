@@ -4,6 +4,10 @@ import org.openjdk.jmh.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
@@ -19,8 +23,14 @@ public class IteratorationSteamBenchmark {
         }
     }
   
-    public static void main(String[] args) throws Exception {
-        org.openjdk.jmh.Main.main(args);
+    public static void main(String[] args) throws RunnerException {
+      Options opt = new OptionsBuilder()
+        .include(IteratorationSteamBenchmark.class.getSimpleName())
+        .forks(1)
+        .warmupIterations(5)
+        .measurementIterations(5)
+        .build();
+        new Runner(opt).run();
     }
 
     @Benchmark

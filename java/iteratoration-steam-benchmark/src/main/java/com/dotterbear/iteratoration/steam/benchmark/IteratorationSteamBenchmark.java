@@ -14,7 +14,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 5000;
+  public static final int N = 1000;
 
     static List<Integer> numsArrayList = new ArrayList<>();
     static {
@@ -69,4 +69,5 @@ public class IteratorationSteamBenchmark {
       // TODO
       return results;
     }
+
 }

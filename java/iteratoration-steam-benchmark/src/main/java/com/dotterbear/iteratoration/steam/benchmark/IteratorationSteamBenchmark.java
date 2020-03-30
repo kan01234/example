@@ -61,7 +61,7 @@ public class IteratorationSteamBenchmark {
       Collection<Double> results = build(numsArrayList);
       for (int i = 0; i < numsArrayList.size(); i++) {
         int num = numsArrayList.get(i);
-        if (i % num == 0)
+        if (i % 2 == 0)
           results.add(Math.sqrt(num));
       }
       return results;
@@ -148,7 +148,7 @@ public class IteratorationSteamBenchmark {
       Collection<Double> results = build(numsLinkedList);
       for (int i = 0; i < numsLinkedList.size(); i++) {
         int num = numsLinkedList.get(i);
-        if (i % num == 0)
+        if (i % 2 == 0)
           results.add(Math.sqrt(num));
       }
       return results;

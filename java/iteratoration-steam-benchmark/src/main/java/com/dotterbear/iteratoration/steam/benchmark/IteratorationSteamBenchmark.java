@@ -3,6 +3,7 @@ package com.dotterbear.iteratoration.steam.benchmark;
 import org.openjdk.jmh.annotations.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ListIterator;

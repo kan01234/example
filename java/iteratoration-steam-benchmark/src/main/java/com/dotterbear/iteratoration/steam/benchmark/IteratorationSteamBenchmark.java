@@ -23,14 +23,22 @@ public class IteratorationSteamBenchmark {
     static List<Integer> numsArrayList = new ArrayList<>();
     static List<Integer> numsLinkedList = new LinkedList<>();
     static List<Integer> numsVector = new Vector<>();
+    static List<Integer> numsStack = new Stack<>();
     static {
         for (int i = 0; i < N; i++) {
             numsArrayList.add(i);
             numsLinkedList.add(i);
             numsVector.add(i);
         }
+        buildNumsStack();
     }
-  
+
+    private static void buildNumsStack() {
+      for (int i = N - 1; i >= 0; i++) {
+          numsStack.push(i);
+        }
+    }
+
 //     public static void main(String[] args) throws RunnerException {
 //       System.out.println("log 1");
 //       Options opt = new OptionsBuilder()
@@ -300,6 +308,19 @@ public class IteratorationSteamBenchmark {
       }
       return results;
     }
+  
+    // stack
+    @Benchmark
+    public Collection<Double> whileStack() {
+      buildNumsStack();
+      Collection<Double> results = build(numsStack);
+      while(numsStack.empty()) {
+        int i = numsStack.pop();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
 
     private Collection<Double> build(Collection<Integer> collection) {
       int size = collection.size() / 2 + 1;
@@ -310,6 +331,8 @@ public class IteratorationSteamBenchmark {
           return new LinkedList();
         case "Vector":
           return new Vector(size);
+        case "Stack":
+          return new Stack();
         default:
           return Collections.emptyList();
       }

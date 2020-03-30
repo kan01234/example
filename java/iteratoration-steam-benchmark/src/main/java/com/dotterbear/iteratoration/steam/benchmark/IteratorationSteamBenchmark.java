@@ -363,7 +363,7 @@ public class IteratorationSteamBenchmark {
   
   private void assertEquals(int actual, int expected) {
     if (actual != expected)
-      throws new Exception("expected: " + expected + ", actual: " + actual);
+      throw new Exception("expected: " + expected + ", actual: " + actual);
   }
   
 }

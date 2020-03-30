@@ -336,6 +336,92 @@ public class IteratorationSteamBenchmark {
 
   // stack
   @Benchmark
+  public Collection<Double> for1Stack() {
+    Collection<Double> results = build(numsStack);
+    for (int i = 0; i < N; i++) {
+      int num = numsStack.get(i);
+      if (num % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for2Stack() {
+    Collection<Double> results = build(numsStack);
+    for (int i = 0; i < numsStack.size(); i++) {
+      int num = numsStack.get(i);
+      if (i % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for3Vector() {
+    Collection<Double> results = build(numsStack);
+    for (int i : numsStack) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1numsStack() {
+    return numsStack.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build(numsStack)));
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorFornumsVector() {
+    Collection<Double> results = build(numsStack);
+    for (Iterator<Integer> iter = numsStack.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileVector() {
+    Collection<Double> results = build(numsStack);
+    Iterator<Integer> iter = numsStack.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorForVector() {
+    Collection<Double> results = build(numsStack);
+    for(ListIterator<Integer> iter = numsStack.listIterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorWhileVector() {
+    Collection<Double> results = build(numsStack);
+    ListIterator<Integer> iter = numsStack.listIterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
   public Collection<Double> whileStackPop() {
     Collection<Double> results = build(numsStack);
     Stack<Integer> numsStackCloned = (Stack<Integer>) numsStack.clone();

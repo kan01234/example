@@ -105,6 +105,7 @@ public class IteratorationSteamBenchmark {
     public List<Double> listIteratorFor() {
       List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
       for(ListIterator<Integer> iter = numsArrayList.listIterator(); iter.hasNext();) {
+        Integer i = iter.next();
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
       }
@@ -116,6 +117,7 @@ public class IteratorationSteamBenchmark {
       List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
       ListIterator<Integer> iter = numsArrayList.listIterator();
       while (iter.hasNext()) {
+        Integer i = iter.next();
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
       }

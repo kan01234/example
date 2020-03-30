@@ -44,27 +44,29 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> for1ArrayList() {
-      List<Double> results = new ArrayList<>(N / 2 + 1);
+      List<Double> results = build(numsArrayList);
       for (int i = 0; i < N; i++) {
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
+        int num = numsArrayList.get(i);
+        if (num % 2 == 0)
+          results.add(Math.sqrt(num));
       }
       return results;
     }
 
     @Benchmark
     public List<Double> for2ArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       for (int i = 0; i < numsArrayList.size(); i++) {
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
+        int num = numsArrayList.get(i);
+        if (i % num == 0)
+          results.add(Math.sqrt(num));
       }
       return results;
     }
 
     @Benchmark
     public List<Double> for3ArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       for (int i : numsArrayList) {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
@@ -77,12 +79,12 @@ public class IteratorationSteamBenchmark {
       return numsArrayList.stream()
         .filter(num -> num % 2 == 0)
         .map(Math::sqrt)
-        .collect(Collectors.toCollection(() -> new ArrayList<>(numsArrayList.size() / 2 + 1)));
+        .collect(Collectors.toCollection(() -> build(numsArrayList););
     }
 
     @Benchmark
     public List<Double> iteratorForArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       for (Iterator<Integer> iter = numsArrayList.iterator(); iter.hasNext();) {
         Integer i = iter.next();
         if (i % 2 == 0)
@@ -93,7 +95,7 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> iteratorWhileArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       Iterator<Integer> iter = numsArrayList.iterator();
       while (iter.hasNext()) {
         Integer i = iter.next();
@@ -105,7 +107,7 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> listIteratorForArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       for(ListIterator<Integer> iter = numsArrayList.listIterator(); iter.hasNext();) {
         Integer i = iter.next();
         if (i % 2 == 0)
@@ -116,7 +118,7 @@ public class IteratorationSteamBenchmark {
   
     @Benchmark
     public List<Double> listIteratorWhileArrayList() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      List<Double> results = build(numsArrayList);
       ListIterator<Integer> iter = numsArrayList.listIterator();
       while (iter.hasNext()) {
         Integer i = iter.next();
@@ -126,4 +128,15 @@ public class IteratorationSteamBenchmark {
       return results;
     }
 
+    private static Collection<Double> build(Collection<Integer> collection) {
+      switch (collection.getClass().getSimpleName()) {
+        case "ArrayList":
+          return new ArrayList<>(collection.size() / 2 + 1);
+        case "LinkedList":
+          return new LinkedList();
+        default:
+          return Collections.emptyList();
+      }
+    }
+  
 }

@@ -37,16 +37,15 @@ jobs:
       run: |
         mvn clean install --file java/iteratoration-steam-benchmark/pom.xml
         find .
-    # upload jar
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        # Artifact name
-        name: build.jar
-        # Directory containing files to upload
-        path: java/iteratoration-steam-benchmark/target/benchmark.jar
     # execute jar
     - name: execute jar
       run: |
         java -jar java/iteratoration-steam-benchmark/target/benchmark.jar -rf json
-        find . -name *.json
+     # upload result.json
+    - name: upload jmh-result
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: jmh-result.json
+        # Directory containing files to upload
+        path: jmh-result.json

@@ -22,9 +22,9 @@ public class IteratorationSteamBenchmark {
   public static final int N = 1000;
 
   private static List<Integer> numsArrayList = new ArrayList<>();
-  private static List<Integer> numsLinkedList = new LinkedList<>();
+  private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
   private static List<Integer> numsVector = new Vector<>();
-  private static List<Integer> numsStack = new Stack<>();
+  private static Stack<Integer> numsStack = new Stack<>();
   
   @Setup(Level.Invocation)
   public static void prepare() {
@@ -224,7 +224,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> whileLinkedListPoll() {
     Collection<Double> results = build(numsLinkedList);
-    while(!numsLinkedList.empty()) {
+    while(!numsLinkedList.isEmpty()) {
       int i = numsLinkedList.poll();
       if (i % 2 == 0)
         results.add(Math.sqrt(i));

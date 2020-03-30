@@ -235,10 +235,11 @@ public class IteratorationSteamBenchmark {
   }
 
   @Benchmark
-  public Collection<Double> zwhileLinkedListPoll() {
+  public Collection<Double> whileLinkedListPoll() {
     Collection<Double> results = build(numsLinkedList);
-    while(!numsLinkedList.isEmpty()) {
-      int i = numsLinkedList.poll();
+    LinkedList<Integer> numsLinkedListCloned = (LinkedList<Integer>) numsLinkedList.clone();
+    while(!numsLinkedListCloned.isEmpty()) {
+      int i = numsLinkedListCloned.poll();
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
@@ -335,10 +336,11 @@ public class IteratorationSteamBenchmark {
 
   // stack
   @Benchmark
-  public Collection<Double> zwhileStackPop() {
+  public Collection<Double> whileStackPop() {
     Collection<Double> results = build(numsStack);
-    while(!numsStack.empty()) {
-      int i = numsStack.pop();
+    Stack<Integer> numsStackCloned = (Stack<Integer>) numsStack.clone();
+    while(!numsStackCloned.empty()) {
+      int i = numsStackCloned.pop();
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }

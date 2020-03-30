@@ -49,3 +49,4 @@ jobs:
     - name: execute jar
       run: |
         java -jar java/iteratoration-steam-benchmark/target/benchmark.jar
+        find .

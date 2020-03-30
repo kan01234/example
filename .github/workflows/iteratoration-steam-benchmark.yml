@@ -48,5 +48,5 @@ jobs:
     # execute jar
     - name: execute jar
       run: |
-        java -jar java/iteratoration-steam-benchmark/target/benchmark.jar
-        find .
+        java -jar java/iteratoration-steam-benchmark/target/benchmark.jar -rf json
+        find . -name *.json

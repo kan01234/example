@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Fork(2)
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+@State(Scope.Thread)
 public class IteratorationSteamBenchmark {
 
   public static final int N = 1000;

@@ -31,7 +31,7 @@ public class IteratorationSteamBenchmark {
       numsLinkedList.add(i);
       numsVector.add(i);
     }
-    for (int i = N - 1; i >= 0; i++) {
+    for (int i = N - 1; i >= 0; i--) {
       numsStack.push(i);
     }
   }

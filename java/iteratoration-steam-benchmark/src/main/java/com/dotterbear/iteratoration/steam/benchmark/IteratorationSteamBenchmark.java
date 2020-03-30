@@ -98,5 +98,6 @@ public class IteratorationSteamBenchmark {
         if (i % 2 == 0)
           results.add(Math.sqrt(i));
       }
+      return results;
     }
 }

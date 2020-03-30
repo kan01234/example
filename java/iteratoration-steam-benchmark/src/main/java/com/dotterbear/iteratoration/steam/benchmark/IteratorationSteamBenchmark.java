@@ -2,6 +2,7 @@ package com.dotterbear.iteratoration.steam.benchmark;
 
 import org.openjdk.jmh.annotations.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -215,7 +216,7 @@ public class IteratorationSteamBenchmark {
       return results;
     }
 
-    private static Collection<Double> build(Collection<Integer> collection) {
+    private Collection<Double> build(Collection<Integer> collection) {
       switch (collection.getClass().getSimpleName()) {
         case "ArrayList":
           return new ArrayList<>(collection.size() / 2 + 1);

@@ -9,6 +9,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import java.util.stream.Collectors;
+import java.lang.RuntimeException;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
@@ -363,7 +364,7 @@ public class IteratorationSteamBenchmark {
   
   private void assertEquals(int actual, int expected) {
     if (actual != expected)
-      throw new Exception("expected: " + expected + ", actual: " + actual);
+      throw new RuntimeException("expected: " + expected + ", actual: " + actual);
   }
   
 }

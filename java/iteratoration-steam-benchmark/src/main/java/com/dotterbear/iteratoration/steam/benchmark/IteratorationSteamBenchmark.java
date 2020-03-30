@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
+@Fork(1)
+@Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 public class IteratorationSteamBenchmark {
 
   public static final int N = 500;
@@ -28,9 +31,6 @@ public class IteratorationSteamBenchmark {
     public static void main(String[] args) throws RunnerException {
       Options opt = new OptionsBuilder()
         .include(IteratorationSteamBenchmark.class.getSimpleName())
-        .forks(1)
-        .warmupIterations(2)
-        .measurementIterations(2)
         .result("jmh-report.txt")
         .resultFormat(ResultFormatType.JSON)
         .build();

@@ -36,7 +36,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${maven.jar.plugin.version}</version>
 				<configuration>
-					<finalName>benchmark.jar</finalName>
+					<finalName>benchmark</finalName>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>

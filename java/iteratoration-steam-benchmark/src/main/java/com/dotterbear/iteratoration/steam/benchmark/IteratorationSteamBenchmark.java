@@ -22,9 +22,20 @@ public class IteratorationSteamBenchmark {
   public static final int N = 500;
 
   private static List<Integer> numsArrayList = new ArrayList<>();
-  private static List<Integer> numsLinkedList = new LinkedList<>();
+  private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
   private static List<Integer> numsVector = new Vector<>();
-  private static List<Integer> numsStack = new Stack<>();
+  private static Stack<Integer> numsStack = new Stack<>();
+  
+//   static {
+//     for (int i = 0; i < N; i++) {
+//       numsArrayList.add(i);
+//       numsLinkedList.add(i);
+//       numsVector.add(i);
+//     }
+//     for (int i = N - 1; i >= 0; i--) {
+//       numsStack.push(i);
+//     }
+//   }
   
   @Setup(Level.Invocation)
   public static void prepare() {
@@ -222,9 +233,9 @@ public class IteratorationSteamBenchmark {
   }
 
   @Benchmark
-  public Collection<Double> whileLinkedListPoll() {
+  public Collection<Double> zwhileLinkedListPoll() {
     Collection<Double> results = build(numsLinkedList);
-    while(!numsLinkedList.empty()) {
+    while(!numsLinkedList.isEmpty()) {
       int i = numsLinkedList.poll();
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -321,7 +332,7 @@ public class IteratorationSteamBenchmark {
 
   // stack
   @Benchmark
-  public Collection<Double> whileStackPop() {
+  public Collection<Double> zwhileStackPop() {
     Collection<Double> results = build(numsStack);
     while(!numsStack.empty()) {
       int i = numsStack.pop();

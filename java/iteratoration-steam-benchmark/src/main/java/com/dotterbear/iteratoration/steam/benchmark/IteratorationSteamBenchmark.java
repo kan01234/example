@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
 @Fork(2)
-@Warmup(iterations = 2, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 2, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
+@Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 public class IteratorationSteamBenchmark {
 
   public static final int N = 1000;
@@ -29,6 +29,7 @@ public class IteratorationSteamBenchmark {
     }
   
     public static void main(String[] args) throws RunnerException {
+      System.out.println("log 1");
       Options opt = new OptionsBuilder()
         .include(IteratorationSteamBenchmark.class.getSimpleName())
         .result("jmh-report.txt")

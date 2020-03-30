@@ -241,7 +241,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
-    assertEquals(reults.size(), NR);
+    assertEquals(results.size(), NR);
     return results;
   }
 
@@ -341,7 +341,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
-    assertEquals(reults.size(), NR);
+    assertEquals(results.size(), NR);
     return results;
   }
 

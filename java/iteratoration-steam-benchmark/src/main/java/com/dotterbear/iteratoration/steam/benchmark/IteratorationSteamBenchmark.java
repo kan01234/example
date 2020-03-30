@@ -79,7 +79,7 @@ public class IteratorationSteamBenchmark {
       return numsArrayList.stream()
         .filter(num -> num % 2 == 0)
         .map(Math::sqrt)
-        .collect(Collectors.toCollection(() -> build(numsArrayList));
+        .collect(Collectors.toCollection(() -> build(numsArrayList)));
     }
 
     @Benchmark
@@ -166,7 +166,7 @@ public class IteratorationSteamBenchmark {
       return numsLinkedList.stream()
         .filter(num -> num % 2 == 0)
         .map(Math::sqrt)
-        .collect(Collectors.toCollection(() -> build(numsLinkedList));
+        .collect(Collectors.toCollection(() -> build(numsLinkedList)));
     }
 
     @Benchmark

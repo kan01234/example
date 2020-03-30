@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Fork(2)
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
-@State(Scope.Thread)
 public class IteratorationSteamBenchmark {
 
   public static final int N = 1000;
@@ -26,8 +25,7 @@ public class IteratorationSteamBenchmark {
   private static List<Integer> numsVector = new Vector<>();
   private static Stack<Integer> numsStack = new Stack<>();
   
-  @Setup(Level.Invocation)
-  public static void prepare() {
+  static {
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
       numsLinkedList.add(i);
@@ -222,7 +220,7 @@ public class IteratorationSteamBenchmark {
   }
 
   @Benchmark
-  public Collection<Double> whileLinkedListPoll() {
+  public Collection<Double> zwhileLinkedListPoll() {
     Collection<Double> results = build(numsLinkedList);
     while(!numsLinkedList.isEmpty()) {
       int i = numsLinkedList.poll();
@@ -321,7 +319,7 @@ public class IteratorationSteamBenchmark {
 
   // stack
   @Benchmark
-  public Collection<Double> whileStackPop() {
+  public Collection<Double> zwhileStackPop() {
     Collection<Double> results = build(numsStack);
     while(!numsStack.empty()) {
       int i = numsStack.pop();

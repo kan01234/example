@@ -20,23 +20,21 @@ public class IteratorationSteamBenchmark {
 
   public static final int N = 1000;
 
-    static List<Integer> numsArrayList = new ArrayList<>();
-    static List<Integer> numsLinkedList = new LinkedList<>();
-    static List<Integer> numsVector = new Vector<>();
-    static List<Integer> numsStack = new Stack<>();
-    static {
-        for (int i = 0; i < N; i++) {
-            numsArrayList.add(i);
-            numsLinkedList.add(i);
-            numsVector.add(i);
-        }
-        buildNumsStack();
-    }
-
-    private static void buildNumsStack() {
+    private List<Integer> numsArrayList = new ArrayList<>();
+    private List<Integer> numsLinkedList = new LinkedList<>();
+    private List<Integer> numsVector = new Vector<>();
+    private List<Integer> numsStack = new Stack<>();
+  
+    @Setup(Level.Invocation)
+    public static void prepare() {
+      for (int i = 0; i < N; i++) {
+        numsArrayList.add(i);
+        numsLinkedList.add(i);
+        numsVector.add(i);
+      }
       for (int i = N - 1; i >= 0; i++) {
-          numsStack.push(i);
-        }
+        numsStack.push(i);
+      }
     }
 
 //     public static void main(String[] args) throws RunnerException {
@@ -222,6 +220,17 @@ public class IteratorationSteamBenchmark {
       return results;
     }
 
+    @Benchmark
+    public Collection<Double> whileLinkedListPoll() {
+      Collection<Double> results = build(numsLinkedList);
+      while(!numsLinkedList.empty()) {
+        int i = numsLinkedList.poll();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
     // vector
     @Benchmark
     public Collection<Double> for1Vector() {
@@ -311,10 +320,9 @@ public class IteratorationSteamBenchmark {
   
     // stack
     @Benchmark
-    public Collection<Double> whileStack() {
-      buildNumsStack();
+    public Collection<Double> whileStackPop() {
       Collection<Double> results = build(numsStack);
-      while(numsStack.empty()) {
+      while(!numsStack.empty()) {
         int i = numsStack.pop();
         if (i % 2 == 0)
           results.add(Math.sqrt(i));

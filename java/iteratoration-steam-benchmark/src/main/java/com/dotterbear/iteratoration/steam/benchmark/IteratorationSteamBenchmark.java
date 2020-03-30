@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 1000;
+  public static final int N = 500;
 
   private static List<Integer> numsArrayList = new ArrayList<>();
   private static LinkedList<Integer> numsLinkedList = new LinkedList<>();

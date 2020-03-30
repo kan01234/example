@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class IteratorationSteamBenchmark {
 
   public static final int N = 500;
+  public static final int NR = 250;
 
   private static List<Integer> numsArrayList = new ArrayList<>();
   private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
@@ -240,6 +241,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(reults.size(), NR);
     return results;
   }
 
@@ -339,6 +341,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(reults.size(), NR);
     return results;
   }
 
@@ -356,6 +359,11 @@ public class IteratorationSteamBenchmark {
       default:
         return Collections.emptyList();
     }
+  }
+  
+  private void assertEquals(int actual, int expected) {
+    if (actual != expected)
+      throws new Exception("expected: " + expected + ", actual: " + actual);
   }
   
 }

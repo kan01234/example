@@ -3,6 +3,8 @@ package com.dotterbear.iteratoration.steam.benchmark;
 import org.openjdk.jmh.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -76,4 +78,25 @@ public class IteratorationSteamBenchmark {
         .collect(Collectors.toCollection(() -> new ArrayList<>(numsArrayList.size() / 2 + 1)));
     }
 
+    @Benchmark
+    public List<Double> iteratorFor() {
+      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      for (Iterator<Integer> iter = numsArrayList.iterator(); iter.hasNext();) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> iteratorWhile() {
+      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
+      Iterator<Integer> iter = numsArrayList.iterator();
+      while (iter.hasNext()) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+    }
 }

@@ -8,13 +8,14 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.results.format.ResultFormatType;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 1000;
+  public static final int N = 500;
 
     static List<Integer> numsArrayList = new ArrayList<>();
     static {
@@ -29,6 +30,8 @@ public class IteratorationSteamBenchmark {
         .forks(1)
         .warmupIterations(2)
         .measurementIterations(2)
+        .result("jmh-report.txt")
+        .resultFormat(ResultFormatType.JSON)
         .build();
         new Runner(opt).run();
     }
@@ -65,9 +68,10 @@ public class IteratorationSteamBenchmark {
 
     @Benchmark
     public List<Double> steam1() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      // TODO
-      return results;
+      return numsArrayList.stream()
+        .filter(num -> num % 2 == 0)
+        .map(Math::sqrt)
+        .collect(Collectors.toCollection(() -> new ArrayList<>(numsArrayList.size() / 2 + 1));
     }
 
 }

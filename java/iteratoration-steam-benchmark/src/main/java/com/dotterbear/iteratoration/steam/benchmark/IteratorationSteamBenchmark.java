@@ -127,6 +127,93 @@ public class IteratorationSteamBenchmark {
       }
       return results;
     }
+                 
+    // linked list
+    @Benchmark
+    public List<Double> for1LinkedList() {
+      List<Double> results = build(numsLinkedList);
+      for (int i = 0; i < N; i++) {
+        int num = numsLinkedList.get(i);
+        if (num % 2 == 0)
+          results.add(Math.sqrt(num));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> for2LinkedList() {
+      List<Double> results = build(numsLinkedList);
+      for (int i = 0; i < numsLinkedList.size(); i++) {
+        int num = numsLinkedList.get(i);
+        if (i % num == 0)
+          results.add(Math.sqrt(num));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> for3LinkedList() {
+      List<Double> results = build(numsLinkedList);
+      for (int i : numsLinkedList) {
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> steam1LinkedList() {
+      return numsLinkedList.stream()
+        .filter(num -> num % 2 == 0)
+        .map(Math::sqrt)
+        .collect(Collectors.toCollection(() -> build(numsLinkedList););
+    }
+
+    @Benchmark
+    public List<Double> iteratorForLinkedList() {
+      List<Double> results = build(numsLinkedList);
+      for (Iterator<Integer> iter = numsLinkedList.iterator(); iter.hasNext();) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> iteratorWhileLinkedList() {
+      List<Double> results = build(numsLinkedList);
+      Iterator<Integer> iter = numsLinkedList.iterator();
+      while (iter.hasNext()) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public List<Double> listIteratorForLinkedList() {
+      List<Double> results = build(numsLinkedList);
+      for(ListIterator<Integer> iter = numsLinkedList.listIterator(); iter.hasNext();) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+  
+    @Benchmark
+    public List<Double> listIteratorWhileLinkedList() {
+      List<Double> results = build(numsLinkedList);
+      ListIterator<Integer> iter = numsLinkedList.listIterator();
+      while (iter.hasNext()) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
 
     private static Collection<Double> build(Collection<Integer> collection) {
       switch (collection.getClass().getSimpleName()) {

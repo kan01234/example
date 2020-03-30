@@ -1,13 +1,7 @@
 package com.dotterbear.iteratoration.steam.benchmark;
 
 import org.openjdk.jmh.annotations.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -28,10 +22,12 @@ public class IteratorationSteamBenchmark {
 
     static List<Integer> numsArrayList = new ArrayList<>();
     static List<Integer> numsLinkedList = new LinkedList<>();
+    static List<Integer> numsVector = new Vector<>();
     static {
         for (int i = 0; i < N; i++) {
             numsArrayList.add(i);
             numsLinkedList.add(i);
+            numsVector.add(i);
         }
     }
   
@@ -218,12 +214,102 @@ public class IteratorationSteamBenchmark {
       return results;
     }
 
+    // vector
+    @Benchmark
+    public Collection<Double> for1Vector() {
+      Collection<Double> results = build(numsVector);
+      for (int i = 0; i < N; i++) {
+        int num = numsVector.get(i);
+        if (num % 2 == 0)
+          results.add(Math.sqrt(num));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public Collection<Double> for2Vector() {
+      Collection<Double> results = build(numsVector);
+      for (int i = 0; i < numsVector.size(); i++) {
+        int num = numsVector.get(i);
+        if (i % 2 == 0)
+          results.add(Math.sqrt(num));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public Collection<Double> for3Vector() {
+      Collection<Double> results = build(numsVector);
+      for (int i : numsVector) {
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public Collection<Double> steam1numsVector() {
+      return numsVector.stream()
+        .filter(num -> num % 2 == 0)
+        .map(Math::sqrt)
+        .collect(Collectors.toCollection(() -> build(numsVector)));
+    }
+
+    @Benchmark
+    public Collection<Double> iteratorFornumsVector() {
+      Collection<Double> results = build(numsVector);
+      for (Iterator<Integer> iter = numsVector.iterator(); iter.hasNext();) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public Collection<Double> iteratorWhileVector() {
+      Collection<Double> results = build(numsVector);
+      Iterator<Integer> iter = numsVector.iterator();
+      while (iter.hasNext()) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
+    @Benchmark
+    public Collection<Double> listIteratorForVector() {
+      Collection<Double> results = build(numsVector);
+      for(ListIterator<Integer> iter = numsVector.listIterator(); iter.hasNext();) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+  
+    @Benchmark
+    public Collection<Double> listIteratorWhileVector() {
+      Collection<Double> results = build(numsVector);
+      ListIterator<Integer> iter = numsVector.listIterator();
+      while (iter.hasNext()) {
+        Integer i = iter.next();
+        if (i % 2 == 0)
+          results.add(Math.sqrt(i));
+      }
+      return results;
+    }
+
     private Collection<Double> build(Collection<Integer> collection) {
+      int size = collection.size() / 2 + 1;
       switch (collection.getClass().getSimpleName()) {
         case "ArrayList":
-          return new ArrayList<>(collection.size() / 2 + 1);
+          return new ArrayList<>(size);
         case "LinkedList":
           return new LinkedList();
+        case "Vector":
+          return new Vector(size);
         default:
           return Collections.emptyList();
       }

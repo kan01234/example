@@ -132,27 +132,27 @@ public class IteratorationSteamBenchmark {
     }
                  
     // linked list
-    @Benchmark
-    public Collection<Double> for1LinkedList() {
-      Collection<Double> results = build(numsLinkedList);
-      for (int i = 0; i < N; i++) {
-        int num = numsLinkedList.get(i);
-        if (num % 2 == 0)
-          results.add(Math.sqrt(num));
-      }
-      return results;
-    }
+//     @Benchmark
+//     public Collection<Double> for1LinkedList() {
+//       Collection<Double> results = build(numsLinkedList);
+//       for (int i = 0; i < N; i++) {
+//         int num = numsLinkedList.get(i);
+//         if (num % 2 == 0)
+//           results.add(Math.sqrt(num));
+//       }
+//       return results;
+//     }
 
-    @Benchmark
-    public Collection<Double> for2LinkedList() {
-      Collection<Double> results = build(numsLinkedList);
-      for (int i = 0; i < numsLinkedList.size(); i++) {
-        int num = numsLinkedList.get(i);
-        if (i % 2 == 0)
-          results.add(Math.sqrt(num));
-      }
-      return results;
-    }
+//     @Benchmark
+//     public Collection<Double> for2LinkedList() {
+//       Collection<Double> results = build(numsLinkedList);
+//       for (int i = 0; i < numsLinkedList.size(); i++) {
+//         int num = numsLinkedList.get(i);
+//         if (i % 2 == 0)
+//           results.add(Math.sqrt(num));
+//       }
+//       return results;
+//     }
 
     @Benchmark
     public Collection<Double> for3LinkedList() {

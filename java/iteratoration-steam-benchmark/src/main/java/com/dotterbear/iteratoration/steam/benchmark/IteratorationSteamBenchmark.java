@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
-@Fork(2)
+@Fork(1)
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
@@ -26,19 +26,7 @@ public class IteratorationSteamBenchmark {
   private static List<Integer> numsVector = new Vector<>();
   private static Stack<Integer> numsStack = new Stack<>();
   
-//   static {
-//     for (int i = 0; i < N; i++) {
-//       numsArrayList.add(i);
-//       numsLinkedList.add(i);
-//       numsVector.add(i);
-//     }
-//     for (int i = N - 1; i >= 0; i--) {
-//       numsStack.push(i);
-//     }
-//   }
-  
-  @Setup(Level.Invocation)
-  public static void prepare() {
+  static {
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
       numsLinkedList.add(i);
@@ -48,6 +36,18 @@ public class IteratorationSteamBenchmark {
       numsStack.push(i);
     }
   }
+  
+//   @Setup(Level.Invocation)
+//   public static void prepare() {
+//     for (int i = 0; i < N; i++) {
+//       numsArrayList.add(i);
+//       numsLinkedList.add(i);
+//       numsVector.add(i);
+//     }
+//     for (int i = N - 1; i >= 0; i--) {
+//       numsStack.push(i);
+//     }
+//   }
 
 //     public static void main(String[] args) throws RunnerException {
 //       System.out.println("log 1");

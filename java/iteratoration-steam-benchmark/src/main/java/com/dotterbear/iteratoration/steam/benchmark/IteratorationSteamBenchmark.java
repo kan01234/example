@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
-@Fork(1)
-@Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+@Fork(2)
+@Warmup(iterations = 2, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 2, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 500;
+  public static final int N = 1000;
 
     static List<Integer> numsArrayList = new ArrayList<>();
     static {

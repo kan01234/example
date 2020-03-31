@@ -38,6 +38,7 @@ jobs:
         mvn clean install --file java/iteratoration-steam-benchmark/pom.xml
         find .
   execute:
+    needs: [build]
     runs-on: ubuntu-latest
     env:
       file-format: csv

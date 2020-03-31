@@ -64,7 +64,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> for1ArrayList() {
     List<Double> results = build();
-    int size = numsArrayList.szie();
+    int size = numsArrayList.size();
     for (int i = 0; i < size; i++) {
       int num = numsArrayList.get(i);
       if (num % 2 == 0)
@@ -438,7 +438,7 @@ public class IteratorationSteamBenchmark {
   }
 
   private List<Double> build() {
-    int size = collection.size() / 2 + 1;
+    int size = N / 2 + 1;
     return new ArrayList<>(size);
   }
   

@@ -443,29 +443,6 @@ public class IteratorationSteamBenchmark {
   
   // hashset
   @Benchmark
-  public Collection<Double> for1HashSet() {
-    List<Double> results = build();
-    int size = numsHashSet.size();
-    for (int i = 0; i < size; i++) {
-      int num = numsHashSet.get(i);
-      if (num % 2 == 0)
-        results.add(Math.sqrt(num));
-    }
-    return results;
-  }
-
-  @Benchmark
-  public Collection<Double> for2HashSet() {
-    List<Double> results = build();
-    for (int i = 0; i < numsHashSet.size(); i++) {
-      int num = numsHashSet.get(i);
-      if (i % 2 == 0)
-        results.add(Math.sqrt(num));
-    }
-    return results;
-  }
-
-  @Benchmark
   public Collection<Double> for3HashSet() {
     List<Double> results = build();
     for (int i : numsHashSet) {

@@ -107,8 +107,8 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> steam1ArrayList() {
-    List<Double> result = build();
-    result = numsArrayList.stream()
+    List<Double> results = build();
+    results = numsArrayList.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
       .collect(Collectors.toList());

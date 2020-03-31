@@ -17,13 +17,11 @@ import java.lang.RuntimeException;
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
+@OperationsPerInvocation
 public class IteratorationSteamBenchmark {
 
-  @Param({ "100", "1000", "2500", "5000" })
-  public static int MAX = 100;
-  
-  public static final int N = MAX;
-  public static int expectedResultSize = -1;
+  private final int N = 100;
+  private int expectedResultSize = -1;
 
   private List<Integer> numsArrayList = new ArrayList<>();
   private LinkedList<Integer> numsLinkedList = new LinkedList<>();
@@ -62,7 +60,6 @@ public class IteratorationSteamBenchmark {
 //     }
 
   @Benchmark
-  @OperationsPerInvocation(N)
   public Collection<Double> for1ArrayList() {
     List<Double> results = build();
     int size = numsArrayList.size();

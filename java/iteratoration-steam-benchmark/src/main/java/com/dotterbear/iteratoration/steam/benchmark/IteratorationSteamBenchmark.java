@@ -13,25 +13,27 @@ import java.lang.RuntimeException;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
-@OperationsPerInvocation(1)
+@OperationsPerInvocation(IteratorationSteamBenchmark.N)
 @Fork(1)
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 // @State(Scope.Thread)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 500;
+  @Param
+  public int N = 100;
   public static int expectedResultSize = -1;
 
-  private static List<Integer> numsArrayList = new ArrayList<>();
-  private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
-  private static List<Integer> numsVector = new Vector<>();
-  private static Stack<Integer> numsStack = new Stack<>();
-  private static Set<Integer> numsHashSet = new HashSet<>();
-  private static Set<Integer> numsLinkedHashSet = new LinkedHashSet<>();
-  private static Set<Integer> numsTreeSet = new TreeSet<>();
-
-  static {
+  private List<Integer> numsArrayList = new ArrayList<>();
+  private LinkedList<Integer> numsLinkedList = new LinkedList<>();
+  private List<Integer> numsVector = new Vector<>();
+  private Stack<Integer> numsStack = new Stack<>();
+  private Set<Integer> numsHashSet = new HashSet<>();
+  private Set<Integer> numsLinkedHashSet = new LinkedHashSet<>();
+  private Set<Integer> numsTreeSet = new TreeSet<>();
+  
+  @Setup(Level.Trial)
+  public static void prepare() {
     expectedResultSize = 0;
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
@@ -47,18 +49,6 @@ public class IteratorationSteamBenchmark {
       numsStack.push(i);
     }
   }
-  
-//   @Setup(Level.Invocation)
-//   public static void prepare() {
-//     for (int i = 0; i < N; i++) {
-//       numsArrayList.add(i);
-//       numsLinkedList.add(i);
-//       numsVector.add(i);
-//     }
-//     for (int i = N - 1; i >= 0; i--) {
-//       numsStack.push(i);
-//     }
-//   }
 
 //     public static void main(String[] args) throws RunnerException {
 //       System.out.println("log 1");

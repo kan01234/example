@@ -29,7 +29,8 @@ public class IteratorationSteamBenchmark {
   private static Stack<Integer> numsStack = new Stack<>();
   private static Set<Integer> numsHashSet = new HashSet<>();
   private static Set<Integer> numsLinkedHashSet = new LinkedHashSet<>();
-  
+  private static Set<Integer> numsTreeSet = new TreeSet<>();
+
   static {
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
@@ -37,6 +38,7 @@ public class IteratorationSteamBenchmark {
       numsVector.add(i);
       numsHashSet.add(i);
       numsLinkedHashSet.add(i);
+      numsTreeSet.add(i);
     }
     for (int i = N - 1; i >= 0; i--) {
       numsStack.push(i);
@@ -541,6 +543,60 @@ public class IteratorationSteamBenchmark {
   public Collection<Double> spliteratorLinkedHashSet() {
     List<Double> results = build();
     Spliterator<Integer> spliterator = numsLinkedHashSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+    assertEquals(results.size(), NR);
+    return results;
+  }
+
+  // treeset
+  @Benchmark
+  public Collection<Double> for3TreeSet() {
+    List<Double> results = build();
+    for (int i : numsTreeSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1TreeSet() {
+    return numsTreeSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForTreeSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsTreeSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileTreeSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsTreeSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+  
+  @Benchmark
+  public Collection<Double> spliteratorTreeSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = numsTreeSet.spliterator();
     spliterator.forEachRemaining(i -> {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));

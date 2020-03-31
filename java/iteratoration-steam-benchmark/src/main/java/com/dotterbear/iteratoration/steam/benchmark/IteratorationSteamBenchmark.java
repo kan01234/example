@@ -1,10 +1,7 @@
 package com.dotterbear.iteratoration.steam.benchmark;
 
 import org.openjdk.jmh.annotations.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -12,116 +9,665 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import java.util.stream.Collectors;
+import java.lang.RuntimeException;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(IteratorationSteamBenchmark.N)
-@Fork(2)
+@Fork(1)
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+// @State(Scope.Thread)
 public class IteratorationSteamBenchmark {
 
-  public static final int N = 1000;
+  public static final int N = 500;
+  public static int expectedResultSize = -1;
 
-    static List<Integer> numsArrayList = new ArrayList<>();
-    static {
-        for (int i = 0; i < N; i++) {
-            numsArrayList.add(i);
-        }
+  private static List<Integer> numsArrayList = new ArrayList<>();
+  private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
+  private static List<Integer> numsVector = new Vector<>();
+  private static Stack<Integer> numsStack = new Stack<>();
+  private static Set<Integer> numsHashSet = new HashSet<>();
+  private static Set<Integer> numsLinkedHashSet = new LinkedHashSet<>();
+  private static Set<Integer> numsTreeSet = new TreeSet<>();
+
+  static {
+    expectedResultSize = 0;
+    for (int i = 0; i < N; i++) {
+      numsArrayList.add(i);
+      numsLinkedList.add(i);
+      numsVector.add(i);
+      numsHashSet.add(i);
+      numsLinkedHashSet.add(i);
+      numsTreeSet.add(i);
+      if (i % 2 == 0)
+        expectedResultSize++;
     }
+    for (int i = N - 1; i >= 0; i--) {
+      numsStack.push(i);
+    }
+  }
   
-    public static void main(String[] args) throws RunnerException {
-      System.out.println("log 1");
-      Options opt = new OptionsBuilder()
-        .include(IteratorationSteamBenchmark.class.getSimpleName())
-        .result("jmh-report.txt")
-        .resultFormat(ResultFormatType.JSON)
-        .build();
-        new Runner(opt).run();
-    }
+//   @Setup(Level.Invocation)
+//   public static void prepare() {
+//     for (int i = 0; i < N; i++) {
+//       numsArrayList.add(i);
+//       numsLinkedList.add(i);
+//       numsVector.add(i);
+//     }
+//     for (int i = N - 1; i >= 0; i--) {
+//       numsStack.push(i);
+//     }
+//   }
 
-    @Benchmark
-    public List<Double> for1() {
-      List<Double> results = new ArrayList<>(N / 2 + 1);
-      for (int i = 0; i < N; i++) {
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
-    }
+//     public static void main(String[] args) throws RunnerException {
+//       System.out.println("log 1");
+//       Options opt = new OptionsBuilder()
+//         .include(IteratorationSteamBenchmark.class.getSimpleName())
+//         .result("jmh-report.txt")
+//         .resultFormat(ResultFormatType.JSON)
+//         .build();
+//         new Runner(opt).run();
+//     }
 
-    @Benchmark
-    public List<Double> for2() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      for (int i = 0; i < numsArrayList.size(); i++) {
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
+  @Benchmark
+  public Collection<Double> for1ArrayList() {
+    List<Double> results = build();
+    int size = numsArrayList.size();
+    for (int i = 0; i < size; i++) {
+      int num = numsArrayList.get(i);
+      if (num % 2 == 0)
+        results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
-    @Benchmark
-    public List<Double> for3() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      for (int i : numsArrayList) {
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
+  @Benchmark
+  public Collection<Double> for2ArrayList() {
+    List<Double> results = build();
+    for (int i = 0; i < numsArrayList.size(); i++) {
+      int num = numsArrayList.get(i);
+      if (i % 2 == 0)
+        results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
-    @Benchmark
-    public List<Double> steam1() {
-      return numsArrayList.stream()
-        .filter(num -> num % 2 == 0)
-        .map(Math::sqrt)
-        .collect(Collectors.toCollection(() -> new ArrayList<>(numsArrayList.size() / 2 + 1)));
+  @Benchmark
+  public Collection<Double> for3ArrayList() {
+    List<Double> results = build();
+    for (int i : numsArrayList) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
-    @Benchmark
-    public List<Double> iteratorFor() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      for (Iterator<Integer> iter = numsArrayList.iterator(); iter.hasNext();) {
-        Integer i = iter.next();
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
-    }
+  @Benchmark
+  public Collection<Double> steam1ArrayList() {
+    List<Double> results = build();
+    results = numsArrayList.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
-    @Benchmark
-    public List<Double> iteratorWhile() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      Iterator<Integer> iter = numsArrayList.iterator();
-      while (iter.hasNext()) {
-        Integer i = iter.next();
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
+  @Benchmark
+  public Collection<Double> iteratorForArrayList() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsArrayList.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
-    @Benchmark
-    public List<Double> listIteratorFor() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      for(ListIterator<Integer> iter = numsArrayList.listIterator(); iter.hasNext();) {
-        Integer i = iter.next();
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
+  @Benchmark
+  public Collection<Double> iteratorWhileArrayList() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsArrayList.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorForArrayList() {
+    List<Double> results = build();
+    for(ListIterator<Integer> iter = numsArrayList.listIterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorWhileArrayList() {
+    List<Double> results = build();
+    ListIterator<Integer> iter = numsArrayList.listIterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  // linked list
+//     @Benchmark
+//     public Collection<Double> for1LinkedList() {
+//       Collection<Double> results = build(numsLinkedList);
+//       for (int i = 0; i < N; i++) {
+//         int num = numsLinkedList.get(i);
+//         if (num % 2 == 0)
+//           results.add(Math.sqrt(num));
+//       }
+//       return results;
+//     }
+
+//     @Benchmark
+//     public Collection<Double> for2LinkedList() {
+//       Collection<Double> results = build(numsLinkedList);
+//       for (int i = 0; i < numsLinkedList.size(); i++) {
+//         int num = numsLinkedList.get(i);
+//         if (i % 2 == 0)
+//           results.add(Math.sqrt(num));
+//       }
+//       return results;
+//     }
+
+  @Benchmark
+  public Collection<Double> for3LinkedList() {
+    List<Double> results = build();
+    for (int i : numsLinkedList) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1LinkedList() {
+    List<Double> results = build();
+    results = numsLinkedList.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForLinkedList() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsLinkedList.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileLinkedList() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsLinkedList.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorForLinkedList() {
+    List<Double> results = build();
+    for(ListIterator<Integer> iter = numsLinkedList.listIterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorWhileLinkedList() {
+    List<Double> results = build();
+    ListIterator<Integer> iter = numsLinkedList.listIterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> whileLinkedListPoll() {
+    List<Double> results = build();
+    LinkedList<Integer> numsLinkedListCloned = (LinkedList<Integer>) numsLinkedList.clone();
+    while(!numsLinkedListCloned.isEmpty()) {
+      int i = numsLinkedListCloned.poll();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  // vector
+  @Benchmark
+  public Collection<Double> for1Vector() {
+    List<Double> results = build();
+    int size = numsVector.size();
+    for (int i = 0; i < N; i++) {
+      int num = numsVector.get(i);
+      if (num % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for2Vector() {
+    List<Double> results = build();
+    for (int i = 0; i < numsVector.size(); i++) {
+      int num = numsVector.get(i);
+      if (i % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for3Vector() {
+    List<Double> results = build();
+    for (int i : numsVector) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1Vector() {
+    return numsVector.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForVector() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsVector.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileVector() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsVector.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorForVector() {
+    List<Double> results = build();
+    for(ListIterator<Integer> iter = numsVector.listIterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorWhileVector() {
+    List<Double> results = build();
+    ListIterator<Integer> iter = numsVector.listIterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  // stack
+  @Benchmark
+  public Collection<Double> for1Stack() {
+    List<Double> results = build();
+    int size = numsStack.size();
+    for (int i = 0; i < size; i++) {
+      int num = numsStack.get(i);
+      if (num % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for2Stack() {
+    List<Double> results = build();
+    for (int i = 0; i < numsStack.size(); i++) {
+      int num = numsStack.get(i);
+      if (i % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for3Stack() {
+    List<Double> results = build();
+    for (int i : numsStack) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1Stack() {
+    List<Double> results = build();
+    results = numsStack.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForStack() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsStack.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileStack() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsStack.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorForStack() {
+    List<Double> results = build();
+    for(ListIterator<Integer> iter = numsStack.listIterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> listIteratorWhileStack() {
+    List<Double> results = build();
+    ListIterator<Integer> iter = numsStack.listIterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> whileStackPop() {
+    List<Double> results = build();
+    Stack<Integer> numsStackCloned = (Stack<Integer>) numsStack.clone();
+    while(!numsStackCloned.empty()) {
+      int i = numsStackCloned.pop();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
   
-    @Benchmark
-    public List<Double> listIteratorWhile() {
-      List<Double> results = new ArrayList<>(numsArrayList.size() / 2 + 1);
-      ListIterator<Integer> iter = numsArrayList.listIterator();
-      while (iter.hasNext()) {
-        Integer i = iter.next();
-        if (i % 2 == 0)
-          results.add(Math.sqrt(i));
-      }
-      return results;
+  // hashset
+  @Benchmark
+  public Collection<Double> for3HashSet() {
+    List<Double> results = build();
+    for (int i : numsHashSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
 
+  @Benchmark
+  public Collection<Double> steam1HashSet() {
+    List<Double> results = build();
+    results = numsHashSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForHashSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsHashSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileHashSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsHashSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+  
+  @Benchmark
+  public Collection<Double> spliteratorHashSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = numsHashSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+  
+  // linkedhashset
+  @Benchmark
+  public Collection<Double> for3LinkedHashSet() {
+    List<Double> results = build();
+    for (int i : numsLinkedHashSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1LinkedHashSet() {
+    List<Double> results = build();
+    results = numsLinkedHashSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForLinkedHashSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsLinkedHashSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileLinkedHashSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsLinkedHashSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+  
+  @Benchmark
+  public Collection<Double> spliteratorLinkedHashSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = numsLinkedHashSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  // treeset
+  @Benchmark
+  public Collection<Double> for3TreeSet() {
+    List<Double> results = build();
+    for (int i : numsTreeSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1TreeSet() {
+    List<Double> results = build();
+    results = numsTreeSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForTreeSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsTreeSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileTreeSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsTreeSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+  
+  @Benchmark
+  public Collection<Double> spliteratorTreeSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = numsTreeSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+    assertEquals(results.size(), expectedResultSize);
+    return results;
+  }
+
+  private List<Double> build() {
+    return new ArrayList<>();
+  }
+  
+  private void assertEquals(int actual, int expected) {
+    if (actual != expected)
+      throw new RuntimeException("expected: " + expected + ", actual: " + actual);
+  }
+  
 }

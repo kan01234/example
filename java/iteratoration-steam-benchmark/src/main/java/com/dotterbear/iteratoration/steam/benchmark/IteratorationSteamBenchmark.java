@@ -63,8 +63,9 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for1ArrayList() {
-    Collection<Double> results = build(numsArrayList);
-    for (int i = 0; i < N; i++) {
+    List<Double> results = build();
+    int size = numsArrayList.szie();
+    for (int i = 0; i < size; i++) {
       int num = numsArrayList.get(i);
       if (num % 2 == 0)
         results.add(Math.sqrt(num));
@@ -74,7 +75,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for2ArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     for (int i = 0; i < numsArrayList.size(); i++) {
       int num = numsArrayList.get(i);
       if (i % 2 == 0)
@@ -85,7 +86,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for3ArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     for (int i : numsArrayList) {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -98,12 +99,12 @@ public class IteratorationSteamBenchmark {
     return numsArrayList.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build(numsArrayList)));
+      .collect(Collectors.toCollection(() -> build()));
   }
 
   @Benchmark
   public Collection<Double> iteratorForArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     for (Iterator<Integer> iter = numsArrayList.iterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -114,7 +115,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> iteratorWhileArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     Iterator<Integer> iter = numsArrayList.iterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -126,7 +127,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorForArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     for(ListIterator<Integer> iter = numsArrayList.listIterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -137,7 +138,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorWhileArrayList() {
-    Collection<Double> results = build(numsArrayList);
+    List<Double> results = build();
     ListIterator<Integer> iter = numsArrayList.listIterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -172,7 +173,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for3LinkedList() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     for (int i : numsLinkedList) {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -185,12 +186,12 @@ public class IteratorationSteamBenchmark {
     return numsLinkedList.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build(numsLinkedList)));
+      .collect(Collectors.toCollection(() -> build()));
   }
 
   @Benchmark
   public Collection<Double> iteratorForLinkedList() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     for (Iterator<Integer> iter = numsLinkedList.iterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -201,7 +202,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> iteratorWhileLinkedList() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     Iterator<Integer> iter = numsLinkedList.iterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -213,7 +214,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorForLinkedList() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     for(ListIterator<Integer> iter = numsLinkedList.listIterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -224,7 +225,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorWhileLinkedList() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     ListIterator<Integer> iter = numsLinkedList.listIterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -236,7 +237,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> whileLinkedListPoll() {
-    Collection<Double> results = build(numsLinkedList);
+    List<Double> results = build();
     LinkedList<Integer> numsLinkedListCloned = (LinkedList<Integer>) numsLinkedList.clone();
     while(!numsLinkedListCloned.isEmpty()) {
       int i = numsLinkedListCloned.poll();
@@ -250,7 +251,8 @@ public class IteratorationSteamBenchmark {
   // vector
   @Benchmark
   public Collection<Double> for1Vector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
+    int size = numsVector.size()
     for (int i = 0; i < N; i++) {
       int num = numsVector.get(i);
       if (num % 2 == 0)
@@ -261,7 +263,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for2Vector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     for (int i = 0; i < numsVector.size(); i++) {
       int num = numsVector.get(i);
       if (i % 2 == 0)
@@ -272,7 +274,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for3Vector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     for (int i : numsVector) {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -285,12 +287,12 @@ public class IteratorationSteamBenchmark {
     return numsVector.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build(numsVector)));
+      .collect(Collectors.toCollection(() -> build()));
   }
 
   @Benchmark
   public Collection<Double> iteratorForVector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     for (Iterator<Integer> iter = numsVector.iterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -301,7 +303,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> iteratorWhileVector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     Iterator<Integer> iter = numsVector.iterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -313,7 +315,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorForVector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     for(ListIterator<Integer> iter = numsVector.listIterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -324,7 +326,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorWhileVector() {
-    Collection<Double> results = build(numsVector);
+    List<Double> results = build();
     ListIterator<Integer> iter = numsVector.listIterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -337,8 +339,9 @@ public class IteratorationSteamBenchmark {
   // stack
   @Benchmark
   public Collection<Double> for1Stack() {
-    Collection<Double> results = build(numsStack);
-    for (int i = 0; i < N; i++) {
+    List<Double> results = build();
+    int size = numsStack.size();
+    for (int i = 0; i < size; i++) {
       int num = numsStack.get(i);
       if (num % 2 == 0)
         results.add(Math.sqrt(num));
@@ -348,7 +351,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for2Stack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     for (int i = 0; i < numsStack.size(); i++) {
       int num = numsStack.get(i);
       if (i % 2 == 0)
@@ -359,7 +362,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> for3Stack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     for (int i : numsStack) {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -372,12 +375,12 @@ public class IteratorationSteamBenchmark {
     return numsStack.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build(numsStack)));
+      .collect(Collectors.toCollection(() -> build()));
   }
 
   @Benchmark
   public Collection<Double> iteratorForStack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     for (Iterator<Integer> iter = numsStack.iterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -388,7 +391,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> iteratorWhileStack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     Iterator<Integer> iter = numsStack.iterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -400,7 +403,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorForStack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     for(ListIterator<Integer> iter = numsStack.listIterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -411,7 +414,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> listIteratorWhileStack() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     ListIterator<Integer> iter = numsStack.listIterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
@@ -423,7 +426,7 @@ public class IteratorationSteamBenchmark {
 
   @Benchmark
   public Collection<Double> whileStackPop() {
-    Collection<Double> results = build(numsStack);
+    List<Double> results = build();
     Stack<Integer> numsStackCloned = (Stack<Integer>) numsStack.clone();
     while(!numsStackCloned.empty()) {
       int i = numsStackCloned.pop();
@@ -434,20 +437,9 @@ public class IteratorationSteamBenchmark {
     return results;
   }
 
-  private Collection<Double> build(Collection<Integer> collection) {
+  private List<Double> build() {
     int size = collection.size() / 2 + 1;
-    switch (collection.getClass().getSimpleName()) {
-      case "ArrayList":
-        return new ArrayList<>(size);
-      case "LinkedList":
-        return new LinkedList();
-      case "Vector":
-        return new Vector(size);
-      case "Stack":
-        return new Stack();
-      default:
-        return Collections.emptyList();
-    }
+    return new ArrayList<>(size);
   }
   
   private void assertEquals(int actual, int expected) {

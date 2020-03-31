@@ -482,6 +482,16 @@ public class IteratorationSteamBenchmark {
     }
     return results;
   }
+  
+  @Benchmark
+  public Collection<Double> spliteratorHashSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = numsHashSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+  }
 
   private List<Double> build() {
     int size = N / 2 + 1;

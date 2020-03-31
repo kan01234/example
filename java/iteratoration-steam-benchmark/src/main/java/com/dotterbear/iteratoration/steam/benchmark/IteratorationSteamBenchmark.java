@@ -21,7 +21,7 @@ import java.lang.RuntimeException;
 public class IteratorationSteamBenchmark {
 
   public static final int N = 500;
-  public static final int NR = 250;
+  public static int expectedResultSize = -1;
 
   private static List<Integer> numsArrayList = new ArrayList<>();
   private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
@@ -39,6 +39,8 @@ public class IteratorationSteamBenchmark {
       numsHashSet.add(i);
       numsLinkedHashSet.add(i);
       numsTreeSet.add(i);
+      if (i % 2 == 0)
+        expectedResultSize++;
     }
     for (int i = N - 1; i >= 0; i--) {
       numsStack.push(i);
@@ -76,6 +78,7 @@ public class IteratorationSteamBenchmark {
       if (num % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -87,6 +90,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -97,15 +101,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1ArrayList() {
-    return numsArrayList.stream()
+    List<Double> result = build();
+    result = numsArrayList.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build()));
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return result;
   }
 
   @Benchmark
@@ -116,6 +124,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -128,6 +137,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -139,6 +149,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -151,6 +162,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -184,15 +196,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1LinkedList() {
-    return numsLinkedList.stream()
+    List<Double> results = build();
+    results = numsLinkedList.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build()));
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
   }
 
   @Benchmark
@@ -203,6 +219,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -215,6 +232,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -226,6 +244,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -238,6 +257,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -250,7 +270,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
-    assertEquals(results.size(), NR);
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -264,6 +284,7 @@ public class IteratorationSteamBenchmark {
       if (num % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -275,6 +296,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -285,6 +307,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -304,6 +327,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -316,6 +340,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -327,6 +352,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -339,6 +365,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -352,6 +379,7 @@ public class IteratorationSteamBenchmark {
       if (num % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -363,6 +391,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(num));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -373,15 +402,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1Stack() {
-    return numsStack.stream()
+    List<Double> results = build();
+    results = numsStack.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build()));
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
   }
 
   @Benchmark
@@ -392,6 +425,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -404,6 +438,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -415,6 +450,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -427,6 +463,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -439,7 +476,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
-    assertEquals(results.size(), NR);
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
   
@@ -451,15 +488,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1HashSet() {
-    return numsHashSet.stream()
+    List<Double> results = build();
+    results = numsHashSet.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
-      .collect(Collectors.toCollection(() -> build()));
+      .collect(Collectors.toList());
+    assertEquals(results.size(), expectedResultSize);
+    return results;
   }
 
   @Benchmark
@@ -470,6 +511,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -482,6 +524,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
   
@@ -493,7 +536,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     });
-    assertEquals(results.size(), NR);
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
   
@@ -505,15 +548,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1LinkedHashSet() {
-    return numsLinkedHashSet.stream()
+    List<Double> results = build();
+    results = numsLinkedHashSet.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
       .collect(Collectors.toCollection(() -> build()));
+    assertEquals(results.size(), expectedResultSize);
+    return results;
   }
 
   @Benchmark
@@ -524,6 +571,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -536,6 +584,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
   
@@ -547,7 +596,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     });
-    assertEquals(results.size(), NR);
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -559,15 +608,19 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   @Benchmark
   public Collection<Double> steam1TreeSet() {
-    return numsTreeSet.stream()
+    List<Double> results = build();
+    results = numsTreeSet.stream()
       .filter(num -> num % 2 == 0)
       .map(Math::sqrt)
       .collect(Collectors.toCollection(() -> build()));
+    assertEquals(results.size(), expectedResultSize);
+    return results;
   }
 
   @Benchmark
@@ -578,6 +631,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
@@ -590,6 +644,7 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     }
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
   
@@ -601,13 +656,12 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     });
-    assertEquals(results.size(), NR);
+    assertEquals(results.size(), expectedResultSize);
     return results;
   }
 
   private List<Double> build() {
-    int size = N / 2 + 1;
-    return new ArrayList<>(size);
+    return new ArrayList<>();
   }
   
   private void assertEquals(int actual, int expected) {

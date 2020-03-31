@@ -252,7 +252,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> for1Vector() {
     List<Double> results = build();
-    int size = numsVector.size()
+    int size = numsVector.size();
     for (int i = 0; i < N; i++) {
       int num = numsVector.get(i);
       if (num % 2 == 0)

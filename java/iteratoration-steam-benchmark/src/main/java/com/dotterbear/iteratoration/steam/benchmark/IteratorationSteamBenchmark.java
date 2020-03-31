@@ -494,6 +494,60 @@ public class IteratorationSteamBenchmark {
     assertEquals(results.size(), NR);
     return results;
   }
+  
+  // linkedhashset
+  @Benchmark
+  public Collection<Double> for3LinkedHashSet() {
+    List<Double> results = build();
+    for (int i : numsLinkedHashSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1LinkedHashSet() {
+    return numsLinkedHashSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForLinkedHashSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = LinkedHashSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileLinkedHashSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = LinkedHashSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+  
+  @Benchmark
+  public Collection<Double> spliteratorLinkedHashSet() {
+    List<Double> results = build();
+    Spliterator<Integer> spliterator = LinkedHashSet.spliterator();
+    spliterator.forEachRemaining(i -> {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    });
+    assertEquals(results.size(), NR);
+    return results;
+  }
 
   private List<Double> build() {
     int size = N / 2 + 1;

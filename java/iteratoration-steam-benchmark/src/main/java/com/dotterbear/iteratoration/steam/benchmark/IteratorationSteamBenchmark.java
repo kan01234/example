@@ -517,7 +517,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> iteratorForLinkedHashSet() {
     List<Double> results = build();
-    for (Iterator<Integer> iter = LinkedHashSet.iterator(); iter.hasNext();) {
+    for (Iterator<Integer> iter = numsLinkedHashSet.iterator(); iter.hasNext();) {
       Integer i = iter.next();
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
@@ -528,7 +528,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> iteratorWhileLinkedHashSet() {
     List<Double> results = build();
-    Iterator<Integer> iter = LinkedHashSet.iterator();
+    Iterator<Integer> iter = numsLinkedHashSet.iterator();
     while (iter.hasNext()) {
       Integer i = iter.next();
       if (i % 2 == 0)
@@ -540,7 +540,7 @@ public class IteratorationSteamBenchmark {
   @Benchmark
   public Collection<Double> spliteratorLinkedHashSet() {
     List<Double> results = build();
-    Spliterator<Integer> spliterator = LinkedHashSet.spliterator();
+    Spliterator<Integer> spliterator = numsLinkedHashSet.spliterator();
     spliterator.forEachRemaining(i -> {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));

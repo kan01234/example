@@ -20,9 +20,9 @@ import java.lang.RuntimeException;
 public class IteratorationSteamBenchmark {
 
   @Param({ "100", "1000", "2500", "5000" })
-  public int MAX = 100;
+  public static int MAX = 100;
   
-  public final int N = MAX;
+  public static final int N = MAX;
   public static int expectedResultSize = -1;
 
   private List<Integer> numsArrayList = new ArrayList<>();

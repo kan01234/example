@@ -27,12 +27,16 @@ public class IteratorationSteamBenchmark {
   private static LinkedList<Integer> numsLinkedList = new LinkedList<>();
   private static List<Integer> numsVector = new Vector<>();
   private static Stack<Integer> numsStack = new Stack<>();
+  private static Set<Integer> numsHashSet = new HashSet<>();
+  private static Set<Integer> numsLinkedHashSet = new LinkedHashSet<>();
   
   static {
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
       numsLinkedList.add(i);
       numsVector.add(i);
+      numsHashSet.add(i);
+      numsLinkedHashSet.add(i);
     }
     for (int i = N - 1; i >= 0; i--) {
       numsStack.push(i);
@@ -434,6 +438,71 @@ public class IteratorationSteamBenchmark {
         results.add(Math.sqrt(i));
     }
     assertEquals(results.size(), NR);
+    return results;
+  }
+  
+  // hashset
+  @Benchmark
+  public Collection<Double> for1HashSet() {
+    List<Double> results = build();
+    int size = numsHashSet.size();
+    for (int i = 0; i < size; i++) {
+      int num = numsHashSet.get(i);
+      if (num % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for2HashSet() {
+    List<Double> results = build();
+    for (int i = 0; i < numsHashSet.size(); i++) {
+      int num = numsHashSet.get(i);
+      if (i % 2 == 0)
+        results.add(Math.sqrt(num));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> for3HashSet() {
+    List<Double> results = build();
+    for (int i : numsHashSet) {
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> steam1HashSet() {
+    return numsHashSet.stream()
+      .filter(num -> num % 2 == 0)
+      .map(Math::sqrt)
+      .collect(Collectors.toCollection(() -> build()));
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorForHashSet() {
+    List<Double> results = build();
+    for (Iterator<Integer> iter = numsHashSet.iterator(); iter.hasNext();) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
+    return results;
+  }
+
+  @Benchmark
+  public Collection<Double> iteratorWhileHashSet() {
+    List<Double> results = build();
+    Iterator<Integer> iter = numsHashSet.iterator();
+    while (iter.hasNext()) {
+      Integer i = iter.next();
+      if (i % 2 == 0)
+        results.add(Math.sqrt(i));
+    }
     return results;
   }
 

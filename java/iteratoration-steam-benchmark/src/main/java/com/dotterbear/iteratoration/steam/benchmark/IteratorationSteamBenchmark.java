@@ -491,6 +491,8 @@ public class IteratorationSteamBenchmark {
       if (i % 2 == 0)
         results.add(Math.sqrt(i));
     });
+    assertEquals(results.size(), NR);
+    return results;
   }
 
   private List<Double> build() {

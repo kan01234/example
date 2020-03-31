@@ -21,7 +21,7 @@ import java.lang.RuntimeException;
 public class IteratorationSteamBenchmark {
 
   @Param
-  public int N = 100;
+  public static int N = 100;
   public static int expectedResultSize = -1;
 
   private List<Integer> numsArrayList = new ArrayList<>();

@@ -19,8 +19,8 @@ import java.lang.RuntimeException;
 // @State(Scope.Thread)
 public class IteratorationSteamBenchmark {
 
-  @Param
-  public static int N = 100;
+  @Param({ 100, 1000, 2500, 5000 })
+  public final int N = 100;
   public static int expectedResultSize = -1;
 
   private List<Integer> numsArrayList = new ArrayList<>();

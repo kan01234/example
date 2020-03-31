@@ -17,7 +17,6 @@ import java.lang.RuntimeException;
 @Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
-@OperationsPerInvocation
 public class IteratorationSteamBenchmark {
 
   private final int N = 100;
@@ -60,6 +59,7 @@ public class IteratorationSteamBenchmark {
 //     }
 
   @Benchmark
+  @OperationsPerInvocation(N)
   public Collection<Double> for1ArrayList() {
     List<Double> results = build();
     int size = numsArrayList.size();

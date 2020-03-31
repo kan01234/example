@@ -113,7 +113,7 @@ public class IteratorationSteamBenchmark {
       .map(Math::sqrt)
       .collect(Collectors.toList());
     assertEquals(results.size(), expectedResultSize);
-    return result;
+    return results;
   }
 
   @Benchmark

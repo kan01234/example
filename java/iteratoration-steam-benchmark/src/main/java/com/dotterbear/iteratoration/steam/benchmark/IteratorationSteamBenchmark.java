@@ -32,6 +32,7 @@ public class IteratorationSteamBenchmark {
   private static Set<Integer> numsTreeSet = new TreeSet<>();
 
   static {
+    expectedResultSize = 0;
     for (int i = 0; i < N; i++) {
       numsArrayList.add(i);
       numsLinkedList.add(i);
